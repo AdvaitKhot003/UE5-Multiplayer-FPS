@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "FPSPlayerCharacter.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
 /**
  * 
  */
@@ -26,5 +28,12 @@ public:
 protected:
 	
 private:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USpringArmComponent> SpringArm;
 	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCameraComponent> FollowCamera;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USkeletalMeshComponent> PlayerMesh1P;
 };
