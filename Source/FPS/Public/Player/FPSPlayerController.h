@@ -19,6 +19,8 @@ class FPS_API AFPSPlayerController : public APlayerController
 public:
 	AFPSPlayerController();
 	
+	FORCEINLINE UFPSPlayerInputDataAsset* GetPlayerInputDataAsset() const { return PlayerInputDataAsset; }
+	
 protected:
 	virtual void BeginPlay() override;
 	

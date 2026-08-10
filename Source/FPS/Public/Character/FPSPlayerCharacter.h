@@ -40,4 +40,14 @@ private:
 	
 	UPROPERTY(VisibleAnywhere, Category = "FPS|Combat")
 	TObjectPtr<UFPSCombatComponent> Combat;
+	
+	void Input_CycleWeapon();
+	
+	void Input_FireWeaponPressed();
+	void Input_FireWeaponReleased();
+	
+	void Input_ReloadWeapon();
+	
+	void Input_AimWeaponPressed();
+	void Input_AimWeaponReleased();
 };

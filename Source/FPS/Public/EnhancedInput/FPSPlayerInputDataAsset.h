@@ -33,4 +33,17 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "FPS|IA|Movement")
 	TObjectPtr<UInputAction> CrouchAction;
+	
+	/** Combat Input Actions */
+	UPROPERTY(EditDefaultsOnly, Category = "FPS|IA|Combat")
+	TObjectPtr<UInputAction> CycleWeaponAction;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "FPS|IA|Combat")
+	TObjectPtr<UInputAction> FireWeaponAction;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "FPS|IA|Combat")
+	TObjectPtr<UInputAction> ReloadWeaponAction;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "FPS|IA|Combat")
+	TObjectPtr<UInputAction> AimWeaponAction;
 };
