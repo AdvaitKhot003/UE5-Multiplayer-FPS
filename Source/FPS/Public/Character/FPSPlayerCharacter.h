@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "FPSPlayerCharacter.generated.h"
 
+class UFPSCombatComponent;
 class UCameraComponent;
 class USpringArmComponent;
 /**
@@ -36,4 +37,7 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USkeletalMeshComponent> PlayerMesh1P;
+	
+	UPROPERTY(VisibleAnywhere, Category = "FPS|Combat")
+	TObjectPtr<UFPSCombatComponent> Combat;
 };

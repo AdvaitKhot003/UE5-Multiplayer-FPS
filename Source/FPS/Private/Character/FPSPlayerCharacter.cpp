@@ -5,6 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Combat/FPSCombatComponent.h"
 
 AFPSPlayerCharacter::AFPSPlayerCharacter()
 {
@@ -50,6 +51,9 @@ AFPSPlayerCharacter::AFPSPlayerCharacter()
 	GetMesh()->SetReceivesDecals(false);
 	
 	GetCharacterMovement()->MovementState.bCanCrouch = true;
+	
+	Combat = CreateDefaultSubobject<UFPSCombatComponent>(TEXT("CombatComponent"));
+	Combat->SetIsReplicated(true);
 }
 
 void AFPSPlayerCharacter::BeginPlay()
