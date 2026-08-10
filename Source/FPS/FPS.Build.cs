@@ -18,7 +18,7 @@ public class FPS : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[]
 		{
-			
+			"EnhancedInput"
 		});
 
 		// Uncomment if you are using Slate UI
