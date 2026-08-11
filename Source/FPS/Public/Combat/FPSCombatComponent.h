@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "FPSCombatComponent.generated.h"
 
+class UFPSWeaponDataAsset;
 /**
  * 
  */
@@ -20,6 +21,8 @@ public:
 	virtual void TickComponent(
 		float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
+	FORCEINLINE UFPSWeaponDataAsset* GetWeaponDataAsset() const { return WeaponDataAsset; }
+	
 	void Initiate_CycleWeapon();
 	
 	void Initiate_FireWeaponPressed();
@@ -33,5 +36,6 @@ public:
 protected:
 	
 private:
-	
+	UPROPERTY(EditDefaultsOnly, Category = "FPS|Weapon")
+	UFPSWeaponDataAsset* WeaponDataAsset;
 };

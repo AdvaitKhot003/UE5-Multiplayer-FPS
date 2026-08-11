@@ -9,6 +9,7 @@
 #include "EnhancedInput/FPSPlayerInputComponent.h"
 #include "EnhancedInput/FPSPlayerInputDataAsset.h"
 #include "Player/FPSPlayerController.h"
+#include "Weapon/FPSWeaponDataAsset.h"
 
 AFPSPlayerCharacter::AFPSPlayerCharacter()
 {
@@ -140,4 +141,11 @@ void AFPSPlayerCharacter::Input_AimWeaponPressed()
 void AFPSPlayerCharacter::Input_AimWeaponReleased()
 {
 	Combat->Initiate_AimWeaponReleased();
+}
+
+FName AFPSPlayerCharacter::GetWeaponGripPoint_Implementation(const FGameplayTag& WeaponType) const
+{
+	const UFPSWeaponDataAsset* WeaponDataAsset = Combat->GetWeaponDataAsset();
+	check(WeaponDataAsset);
+	return WeaponDataAsset->WeaponGripPoints.FindChecked(WeaponType);
 }

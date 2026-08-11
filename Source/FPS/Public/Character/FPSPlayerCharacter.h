@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interface/FPSPlayerInterface.h"
 #include "FPSPlayerCharacter.generated.h"
 
 class UFPSCombatComponent;
@@ -13,7 +14,7 @@ class USpringArmComponent;
  * 
  */
 UCLASS()
-class FPS_API AFPSPlayerCharacter : public ACharacter
+class FPS_API AFPSPlayerCharacter : public ACharacter, public IFPSPlayerInterface
 {
 	GENERATED_BODY()
 
@@ -25,6 +26,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	/** Player Interface Start */
+	virtual FName GetWeaponGripPoint_Implementation(const FGameplayTag& WeaponType) const override;
+	/** Player Interface End */
 
 protected:
 	
