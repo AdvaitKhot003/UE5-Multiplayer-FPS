@@ -56,6 +56,8 @@ void UFPSCombatComponent::SpawnInventory()
 {
 	check(DefaultWeaponClass);
 	AFPSWeaponActor* NewWeapon = SpawnWeapon(DefaultWeaponClass);
+	if (!IsValid(NewWeapon)) return;
+	NewWeapon->AttachWeaponToOwningPawn();
 }
 
 void UFPSCombatComponent::DestroyInventory()

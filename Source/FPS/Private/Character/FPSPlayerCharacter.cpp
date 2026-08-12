@@ -156,3 +156,13 @@ FName AFPSPlayerCharacter::GetWeaponGripPoint_Implementation(const FGameplayTag&
 	check(WeaponDataAsset);
 	return WeaponDataAsset->WeaponGripPoints.FindChecked(WeaponType);
 }
+
+USkeletalMeshComponent* AFPSPlayerCharacter::GetPlayerMesh1P_Implementation() const
+{
+	return PlayerMesh1P;
+}
+
+USkeletalMeshComponent* AFPSPlayerCharacter::GetPlayerMesh3P_Implementation() const
+{
+	return GetMesh();
+}
