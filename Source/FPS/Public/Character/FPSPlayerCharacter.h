@@ -29,6 +29,8 @@ public:
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
+	virtual void BeginDestroy() override;
+	
 #pragma region Player Interface
 	virtual FName GetWeaponGripPoint_Implementation(const FGameplayTag& WeaponType) const override;
 	

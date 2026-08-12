@@ -2,6 +2,7 @@
 
 #include "Combat/FPSCombatComponent.h"
 #include "Weapon/FPSWeaponActor.h"
+#include "Net/UnrealNetwork.h"
 
 UFPSCombatComponent::UFPSCombatComponent()
 {
@@ -14,6 +15,20 @@ void UFPSCombatComponent::TickComponent(
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
+}
+
+void UFPSCombatComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(UFPSCombatComponent, Inventory);
+	DOREPLIFETIME(UFPSCombatComponent, CurrentEquippedWeapon);
+}
+
+void UFPSCombatComponent::OnRep_CurrentEquippedWeapon(AFPSWeaponActor* OldEquippedWeapon)
+{
+	if (!IsValid(CurrentEquippedWeapon)) return;
+	CurrentEquippedWeapon->AttachWeaponToOwningPawn();
 }
 
 void UFPSCombatComponent::Initiate_CycleWeapon()
@@ -54,15 +69,27 @@ void UFPSCombatComponent::Initiate_AimWeaponReleased()
 
 void UFPSCombatComponent::SpawnInventory()
 {
-	check(DefaultWeaponClass);
-	AFPSWeaponActor* NewWeapon = SpawnWeapon(DefaultWeaponClass);
-	if (!IsValid(NewWeapon)) return;
-	NewWeapon->AttachWeaponToOwningPawn();
+	const AActor* OwningActor = GetOwner();
+	if (!IsValid(OwningActor)) return;
+	if (!OwningActor->HasAuthority()) return;
+	
+	for (const TSubclassOf<AFPSWeaponActor>& WeaponClass : DefaultWeaponClasses)
+	{
+		AFPSWeaponActor* NewWeapon = SpawnWeapon(WeaponClass);
+		Inventory.AddUnique(NewWeapon);
+	}
+	
+	if (Inventory.IsEmpty()) return;
+	EquipWeapon(Inventory[0]);
 }
 
 void UFPSCombatComponent::DestroyInventory()
 {
-	
+	for (AFPSWeaponActor* Weapon : Inventory)
+	{
+		if (!IsValid(Weapon)) continue;
+		Weapon->Destroy();
+	}
 }
 
 AFPSWeaponActor* UFPSCombatComponent::SpawnWeapon(const TSubclassOf<AFPSWeaponActor>& WeaponClassToSpawn) const
@@ -77,4 +104,10 @@ AFPSWeaponActor* UFPSCombatComponent::SpawnWeapon(const TSubclassOf<AFPSWeaponAc
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
 	return GetWorld()->SpawnActor<AFPSWeaponActor>(WeaponClassToSpawn, SpawnParams);
+}
+
+void UFPSCombatComponent::EquipWeapon(AFPSWeaponActor* Weapon)
+{
+	CurrentEquippedWeapon = Weapon;
+	CurrentEquippedWeapon->AttachWeaponToOwningPawn();
 }

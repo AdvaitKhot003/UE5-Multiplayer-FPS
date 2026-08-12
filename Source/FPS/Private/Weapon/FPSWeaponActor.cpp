@@ -1,6 +1,8 @@
 ﻿// No Copyright.
 
 #include "Weapon/FPSWeaponActor.h"
+
+#include "Combat/FPSCombatComponent.h"
 #include "Interface/FPSPlayerInterface.h"
 
 AFPSWeaponActor::AFPSWeaponActor()
@@ -49,7 +51,16 @@ void AFPSWeaponActor::OnRep_Instigator()
 {
 	Super::OnRep_Instigator();
 	
-	AttachWeaponToOwningPawn();
+	const APawn* OwningPawn = GetInstigator();
+	if (!IsValid(OwningPawn)) return;
+	
+	const UFPSCombatComponent* Combat = OwningPawn->FindComponentByClass<UFPSCombatComponent>();
+	if (!IsValid(Combat)) return;
+ 
+	if (Combat->GetCurrentEquippedWeapon() == this)
+	{
+		AttachWeaponToOwningPawn();
+	}
 }
 
 void AFPSWeaponActor::SetWeaponMeshVisibility(const APawn* OwningPawn)

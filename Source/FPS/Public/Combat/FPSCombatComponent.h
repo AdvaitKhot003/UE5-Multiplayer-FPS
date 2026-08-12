@@ -22,10 +22,14 @@ public:
 	virtual void TickComponent(
 		float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	FORCEINLINE UFPSWeaponDataAsset* GetWeaponDataAsset() const { return WeaponDataAsset; }
+	FORCEINLINE AFPSWeaponActor* GetCurrentEquippedWeapon() const { return CurrentEquippedWeapon; }
 	
 	void SpawnInventory();
 	void DestroyInventory();
+	void EquipWeapon(AFPSWeaponActor* Weapon);
 	
 	void Initiate_CycleWeapon();
 	
@@ -41,10 +45,19 @@ protected:
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "FPS|Weapon")
-	UFPSWeaponDataAsset* WeaponDataAsset;
+	TObjectPtr<UFPSWeaponDataAsset> WeaponDataAsset;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "FPS|Weapon")
-	TSubclassOf<AFPSWeaponActor> DefaultWeaponClass;
+	TArray<TSubclassOf<AFPSWeaponActor>> DefaultWeaponClasses;
+	
+	UPROPERTY(Transient, Replicated)
+	TArray<AFPSWeaponActor*> Inventory;
+	
+	UPROPERTY(Transient, ReplicatedUsing = OnRep_CurrentEquippedWeapon)
+	TObjectPtr<AFPSWeaponActor> CurrentEquippedWeapon;
+	
+	UFUNCTION()
+	void OnRep_CurrentEquippedWeapon(AFPSWeaponActor* OldEquippedWeapon);
 	
 	AFPSWeaponActor* SpawnWeapon(const TSubclassOf<AFPSWeaponActor>& WeaponClassToSpawn) const;
 };

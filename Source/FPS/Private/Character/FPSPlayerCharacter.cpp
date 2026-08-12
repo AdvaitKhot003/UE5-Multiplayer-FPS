@@ -79,6 +79,13 @@ void AFPSPlayerCharacter::Tick(float DeltaTime)
 
 }
 
+void AFPSPlayerCharacter::BeginDestroy()
+{
+	Super::BeginDestroy();
+	
+	Combat->DestroyInventory();
+}
+
 void AFPSPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
