@@ -1,6 +1,7 @@
 ﻿// No Copyright.
 
 #include "Combat/FPSCombatComponent.h"
+#include "Weapon/FPSWeaponActor.h"
 
 UFPSCombatComponent::UFPSCombatComponent()
 {
@@ -49,4 +50,29 @@ void UFPSCombatComponent::Initiate_AimWeaponReleased()
 {
 	GEngine->AddOnScreenDebugMessage(
 		-1, 5.f, FColor::Cyan, TEXT("Initiate_AimWeaponReleased"), false);
+}
+
+void UFPSCombatComponent::SpawnInventory()
+{
+	check(DefaultWeaponClass);
+	AFPSWeaponActor* NewWeapon = SpawnWeapon(DefaultWeaponClass);
+}
+
+void UFPSCombatComponent::DestroyInventory()
+{
+	
+}
+
+AFPSWeaponActor* UFPSCombatComponent::SpawnWeapon(const TSubclassOf<AFPSWeaponActor>& WeaponClassToSpawn) const
+{
+	AActor* OwningActor = GetOwner();
+	if (!IsValid(OwningActor)) return nullptr;
+	if (!OwningActor->HasAuthority()) return nullptr;
+	
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = OwningActor;
+	SpawnParams.Instigator = Cast<APawn>(OwningActor);
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	
+	return GetWorld()->SpawnActor<AFPSWeaponActor>(WeaponClassToSpawn, SpawnParams);
 }
