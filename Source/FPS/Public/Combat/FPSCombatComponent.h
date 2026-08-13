@@ -40,6 +40,9 @@ public:
 	
 	void Initiate_AimWeaponPressed();
 	void Initiate_AimWeaponReleased();
+	
+	UPROPERTY(BlueprintReadOnly, Replicated)
+	bool bAiming;
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FPS|Weapon")
@@ -59,4 +62,9 @@ private:
 	void OnRep_CurrentEquippedWeapon(AFPSWeaponActor* OldEquippedWeapon);
 	
 	AFPSWeaponActor* SpawnWeapon(const TSubclassOf<AFPSWeaponActor>& WeaponClassToSpawn) const;
+	
+	UFUNCTION(Server, Reliable)
+	void Server_AimWeapon(bool bPressed);
+	
+	void Local_AimWeapon(bool bPressed);
 };

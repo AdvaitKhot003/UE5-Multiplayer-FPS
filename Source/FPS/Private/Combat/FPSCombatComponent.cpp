@@ -23,6 +23,7 @@ void UFPSCombatComponent::GetLifetimeReplicatedProps(TArray<class FLifetimePrope
 	
 	DOREPLIFETIME(UFPSCombatComponent, Inventory);
 	DOREPLIFETIME(UFPSCombatComponent, CurrentEquippedWeapon);
+	DOREPLIFETIME_CONDITION(UFPSCombatComponent, bAiming, COND_SkipOwner);
 }
 
 void UFPSCombatComponent::OnRep_CurrentEquippedWeapon(AFPSWeaponActor* OldEquippedWeapon)
@@ -57,14 +58,24 @@ void UFPSCombatComponent::Initiate_ReloadWeapon()
 
 void UFPSCombatComponent::Initiate_AimWeaponPressed()
 {
-	GEngine->AddOnScreenDebugMessage(
-		-1, 5.f, FColor::Cyan, TEXT("Initiate_AimWeaponPressed"), false);
+	Local_AimWeapon(true);
+	Server_AimWeapon(true);
 }
 
 void UFPSCombatComponent::Initiate_AimWeaponReleased()
 {
-	GEngine->AddOnScreenDebugMessage(
-		-1, 5.f, FColor::Cyan, TEXT("Initiate_AimWeaponReleased"), false);
+	Local_AimWeapon(false);
+	Server_AimWeapon(false);
+}
+
+void UFPSCombatComponent::Server_AimWeapon_Implementation(bool bPressed)
+{
+	Local_AimWeapon(bPressed);
+}
+
+void UFPSCombatComponent::Local_AimWeapon(bool bPressed)
+{
+	bAiming =  bPressed;
 }
 
 void UFPSCombatComponent::SpawnInventory()
