@@ -39,6 +39,8 @@ public:
 #pragma endregion
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FPS|Combat")
+	TObjectPtr<UFPSCombatComponent> Combat;
 	
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -49,9 +51,6 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USkeletalMeshComponent> PlayerMesh1P;
-	
-	UPROPERTY(VisibleAnywhere, Category = "FPS|Combat")
-	TObjectPtr<UFPSCombatComponent> Combat;
 	
 	void Input_CycleWeapon();
 	

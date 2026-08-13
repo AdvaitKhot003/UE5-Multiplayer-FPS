@@ -31,7 +31,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "FPS|Weapon", meta = (Categories = "Weapon.WeaponType"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FPS|Weapon", meta = (Categories = "Weapon.WeaponType"))
 	FGameplayTag WeaponType = WeaponTags::WeaponType_None;
 	
 private:

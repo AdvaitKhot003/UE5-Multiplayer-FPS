@@ -42,19 +42,18 @@ public:
 	void Initiate_AimWeaponReleased();
 
 protected:
-	
-private:
-	UPROPERTY(EditDefaultsOnly, Category = "FPS|Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FPS|Weapon")
 	TObjectPtr<UFPSWeaponDataAsset> WeaponDataAsset;
 	
+	UPROPERTY(Transient, BlueprintReadOnly, ReplicatedUsing = OnRep_CurrentEquippedWeapon)
+	TObjectPtr<AFPSWeaponActor> CurrentEquippedWeapon;
+	
+private:
 	UPROPERTY(EditDefaultsOnly, Category = "FPS|Weapon")
 	TArray<TSubclassOf<AFPSWeaponActor>> DefaultWeaponClasses;
 	
 	UPROPERTY(Transient, Replicated)
 	TArray<AFPSWeaponActor*> Inventory;
-	
-	UPROPERTY(Transient, ReplicatedUsing = OnRep_CurrentEquippedWeapon)
-	TObjectPtr<AFPSWeaponActor> CurrentEquippedWeapon;
 	
 	UFUNCTION()
 	void OnRep_CurrentEquippedWeapon(AFPSWeaponActor* OldEquippedWeapon);
