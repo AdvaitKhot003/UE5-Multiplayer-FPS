@@ -24,6 +24,8 @@ public:
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh1P() const { return WeaponMesh1P; }
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh3P() const { return WeaponMesh3P; }
 	
+	FORCEINLINE FGameplayTag GetWeaponType() const { return WeaponType; }
+	
 	void AttachWeaponToOwningPawn();
 
 protected:
