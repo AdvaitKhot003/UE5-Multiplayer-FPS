@@ -57,6 +57,9 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnAimWeapon(bool bIsAiming);
 	
+	UFUNCTION(BlueprintCallable)
+	float GetMappedPitchAimRotation() const;
+	
 private:
 	void Input_CycleWeapon();
 	

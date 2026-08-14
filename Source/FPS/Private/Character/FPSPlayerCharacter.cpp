@@ -162,6 +162,20 @@ void AFPSPlayerCharacter::Input_AimWeaponReleased()
 	OnAimWeapon(false);
 }
 
+float AFPSPlayerCharacter::GetMappedPitchAimRotation() const
+{
+	const FRotator AimRotation = GetBaseAimRotation();
+	float PitchAimRotation = AimRotation.Pitch;
+	if (PitchAimRotation > 90.f && !IsLocallyControlled())
+	{
+		const FVector2D InRange(270.f, 360.f);
+		const FVector2D OutRange(-90.f, 0.f);
+		
+		PitchAimRotation = FMath::GetMappedRangeValueClamped(InRange, OutRange, PitchAimRotation);
+	}
+	return PitchAimRotation;
+}
+
 FName AFPSPlayerCharacter::GetWeaponGripPoint_Implementation(const FGameplayTag& WeaponType) const
 {
 	const UFPSWeaponDataAsset* WeaponDataAsset = Combat->GetWeaponDataAsset();
