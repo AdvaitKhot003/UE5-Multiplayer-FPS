@@ -37,6 +37,12 @@ public:
 	virtual USkeletalMeshComponent* GetPlayerMesh1P_Implementation() const override;
 	virtual USkeletalMeshComponent* GetPlayerMesh3P_Implementation() const override;
 #pragma endregion
+	
+	UFUNCTION(BlueprintCallable)
+	float GetMappedPitchAimRotation() const;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "FPS|FABRIK")
+	FTransform FABRIKSocketTransform;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FPS|Camera")
@@ -57,9 +63,6 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnAimWeapon(bool bIsAiming);
 	
-	UFUNCTION(BlueprintCallable)
-	float GetMappedPitchAimRotation() const;
-	
 private:
 	void Input_CycleWeapon();
 	
@@ -70,4 +73,6 @@ private:
 	
 	void Input_AimWeaponPressed();
 	void Input_AimWeaponReleased();
+	
+	void CalculateFABRIKSocketTransform();
 };

@@ -10,6 +10,7 @@
 #include "EnhancedInput/FPSPlayerInputDataAsset.h"
 #include "Player/FPSPlayerController.h"
 #include "Weapon/FPSWeaponDataAsset.h"
+#include "Weapon/FPSWeaponActor.h"
 
 AFPSPlayerCharacter::AFPSPlayerCharacter()
 {
@@ -79,7 +80,33 @@ void AFPSPlayerCharacter::PossessedBy(AController* NewController)
 void AFPSPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	CalculateFABRIKSocketTransform();
+}
 
+void AFPSPlayerCharacter::CalculateFABRIKSocketTransform()
+{
+	const AFPSWeaponActor* CurrentEquippedWeapon = Combat->GetCurrentEquippedWeapon();
+	if (!IsValid(CurrentEquippedWeapon)) return;
+
+	USkeletalMeshComponent* WeaponMesh3P = CurrentEquippedWeapon->GetWeaponMesh3P();
+	if (!IsValid(WeaponMesh3P)) return;
+
+	FABRIKSocketTransform = WeaponMesh3P->GetSocketTransform("FABRIK_Socket", RTS_World);
+
+	FVector OutLocation;
+	FRotator OutRotation;
+
+	GetMesh()->TransformToBoneSpace(
+		"hand_r",
+		FABRIKSocketTransform.GetLocation(),
+		FABRIKSocketTransform.GetRotation().Rotator(),
+		OutLocation,
+		OutRotation
+	);
+
+	FABRIKSocketTransform.SetLocation(OutLocation);
+	FABRIKSocketTransform.SetRotation(OutRotation.Quaternion());
 }
 
 void AFPSPlayerCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
