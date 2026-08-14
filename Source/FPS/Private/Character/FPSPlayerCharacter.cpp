@@ -58,12 +58,15 @@ AFPSPlayerCharacter::AFPSPlayerCharacter()
 	
 	Combat = CreateDefaultSubobject<UFPSCombatComponent>(TEXT("CombatComponent"));
 	Combat->SetIsReplicated(true);
+	
+	DefaultFOV = 90.f;
 }
 
 void AFPSPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	FollowCamera->SetFieldOfView(DefaultFOV);
 }
 
 void AFPSPlayerCharacter::PossessedBy(AController* NewController)
@@ -79,11 +82,11 @@ void AFPSPlayerCharacter::Tick(float DeltaTime)
 
 }
 
-void AFPSPlayerCharacter::BeginDestroy()
+void AFPSPlayerCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	Super::BeginDestroy();
-	
 	Combat->DestroyInventory();
+	
+	Super::EndPlay(EndPlayReason);
 }
 
 void AFPSPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -150,11 +153,13 @@ void AFPSPlayerCharacter::Input_ReloadWeapon()
 void AFPSPlayerCharacter::Input_AimWeaponPressed()
 {
 	Combat->Initiate_AimWeaponPressed();
+	OnAimWeapon(true);
 }
 
 void AFPSPlayerCharacter::Input_AimWeaponReleased()
 {
 	Combat->Initiate_AimWeaponReleased();
+	OnAimWeapon(false);
 }
 
 FName AFPSPlayerCharacter::GetWeaponGripPoint_Implementation(const FGameplayTag& WeaponType) const

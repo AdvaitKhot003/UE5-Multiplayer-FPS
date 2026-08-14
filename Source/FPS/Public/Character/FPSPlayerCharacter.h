@@ -29,7 +29,7 @@ public:
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	virtual void BeginDestroy() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 #pragma region Player Interface
 	virtual FName GetWeaponGripPoint_Implementation(const FGameplayTag& WeaponType) const override;
@@ -39,19 +39,25 @@ public:
 #pragma endregion
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FPS|Camera")
+	TObjectPtr<USpringArmComponent> SpringArm;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FPS|Camera")
+	TObjectPtr<UCameraComponent> FollowCamera;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FPS|Mesh")
+	TObjectPtr<USkeletalMeshComponent> PlayerMesh1P;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FPS|Combat")
 	TObjectPtr<UFPSCombatComponent> Combat;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FPS|Combat")
+	float DefaultFOV;
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnAimWeapon(bool bIsAiming);
+	
 private:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USpringArmComponent> SpringArm;
-	
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UCameraComponent> FollowCamera;
-	
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USkeletalMeshComponent> PlayerMesh1P;
-	
 	void Input_CycleWeapon();
 	
 	void Input_FireWeaponPressed();

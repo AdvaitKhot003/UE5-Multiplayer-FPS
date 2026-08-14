@@ -24,6 +24,8 @@ AFPSWeaponActor::AFPSWeaponActor()
 	WeaponMesh3P->SetReceivesDecals(false);
 	WeaponMesh3P->SetHiddenInGame(true);
 	WeaponMesh3P->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::OnlyTickPoseWhenRendered;
+	
+	AimWeaponFOV = 60.f;
 }
 
 void AFPSWeaponActor::BeginPlay()

@@ -96,11 +96,17 @@ void UFPSCombatComponent::SpawnInventory()
 
 void UFPSCombatComponent::DestroyInventory()
 {
+	if (!GetOwner()) return;
+	if (!GetOwner()->HasAuthority()) return;
+	
 	for (AFPSWeaponActor* Weapon : Inventory)
 	{
 		if (!IsValid(Weapon)) continue;
 		Weapon->Destroy();
 	}
+	
+	Inventory.Empty();
+	CurrentEquippedWeapon = nullptr;
 }
 
 AFPSWeaponActor* UFPSCombatComponent::SpawnWeapon(const TSubclassOf<AFPSWeaponActor>& WeaponClassToSpawn) const

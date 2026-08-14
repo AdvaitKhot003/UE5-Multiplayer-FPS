@@ -27,6 +27,9 @@ public:
 	FORCEINLINE FGameplayTag GetWeaponType() const { return WeaponType; }
 	
 	void AttachWeaponToOwningPawn();
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "FPS|Combat")
+	float AimWeaponFOV;
 
 protected:
 	virtual void BeginPlay() override;
